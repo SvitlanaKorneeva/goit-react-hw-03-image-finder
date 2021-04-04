@@ -5,6 +5,7 @@ import ContactForm from "./components/ContactForm/ContactForm";
 import Filter from "./components/Filter/Filter";
 import { v4 as genId } from "uuid";
 import ContactList from "./components/ContactList/ContactList";
+import Modal from "./components/Modal/Modal"
 
 class App extends Component {
   state = {
@@ -14,7 +15,9 @@ class App extends Component {
     {id: 'id-4', name: 'Annie Copeland', number: '227-91-26'},
     ],
     filter: '',
+    showModal : false
   }
+  
 
   componentDidMount() {
 
@@ -67,18 +70,28 @@ class App extends Component {
   }))
   
   }
+
+  toggleModal = () => {
+    this.setState(({ showModal }) => ({
+      showModal: !showModal,
+    }));
+}
   
   render() {
-    const { filter } = this.state
+    const { filter, showModal } = this.state
     const visibleContacts = this.getVisibleContacts();
    
       return (
         <div>
+          <button type= "button" onClick={this.toggleModal}>Открыть модалку</button>
+          {showModal && <Modal onClose = {this.toggleModal}>
+          <h1>привет это контент модалки</h1>
+            </Modal>}
           <h1 className="title">Phonebook</h1>
-          <ContactForm onAddContact={this.addContact} contacts={visibleContacts} />
+          {/* <ContactForm onAddContact={this.addContact} contacts={visibleContacts} />
           <h2 className="title">Contacts</h2>
           <Filter filter={filter} changeFilter={this.changeFilter} />
-          <ContactList contacts={visibleContacts} onDeleteContact={this.deleteContact}/>
+          <ContactList contacts={visibleContacts} onDeleteContact={this.deleteContact}/> */}
         </div>
     );
   }
