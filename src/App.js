@@ -5,7 +5,8 @@ import ContactForm from "./components/ContactForm/ContactForm";
 import Filter from "./components/Filter/Filter";
 import { v4 as genId } from "uuid";
 import ContactList from "./components/ContactList/ContactList";
-import Modal from "./components/Modal/Modal"
+import Modal from "./components/Modal/Modal";
+import Button from "./components/Button/Button";
 
 class App extends Component {
   state = {
@@ -86,7 +87,8 @@ class App extends Component {
           <button type= "button" onClick={this.toggleModal}>Открыть модалку</button>
           {showModal && <Modal onClose = {this.toggleModal}>
           <h1>привет это контент модалки</h1>
-            </Modal>}
+          </Modal>}
+          <Button>Load more</Button>
           <h1 className="title">Phonebook</h1>
           {/* <ContactForm onAddContact={this.addContact} contacts={visibleContacts} />
           <h2 className="title">Contacts</h2>
