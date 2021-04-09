@@ -96,10 +96,7 @@ class App extends Component {
           <Button aria-label="Загрузить еще">Load more</Button>
           <h1 className="title">Phonebook</h1>
           <Gallery gallery={gallery} getQuery={getQuery }/>
-          {/* <ContactForm onAddContact={this.addContact} contacts={visibleContacts} />
-          <h2 className="title">Contacts</h2>
-          <Filter filter={filter} changeFilter={this.changeFilter} />
-          <ContactList contacts={visibleContacts} onDeleteContact={this.deleteContact}/> */}
+          
         </div>
     );
   }
