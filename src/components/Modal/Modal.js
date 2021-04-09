@@ -30,14 +30,15 @@ class Modal extends Component {
         // console.log('currentTarget: ', event.currentTarget);
         // console.log('target: ', event.target);
 
-    if (event.currentTarget === event.target) {
+        if (event.currentTarget === event.target) {
       this.props.onClose();
     }
     }
     render() {
         return createPortal(
             <div className={s.Modal__backdrop} onClick={this.handleBackdropClick}>
-            <div className={s.Modal__content}>{this.props.children}</div>
+                <div className={s.Modal__content}>
+                    {this.props.children}</div>
             </div>, modalRoot,
             
         )

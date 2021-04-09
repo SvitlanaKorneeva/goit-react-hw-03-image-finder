@@ -41,39 +41,7 @@ class App extends Component {
         .catch((err) => {});
     }
   }
-  addContact = ({ name, number }) => {
-    const newContact = { id: genId, name, number }
-    const contacts = this.state.contacts
-    if (contacts.some(el => el.name.toLowerCase() === name.toLowerCase()))
-    { return (alert(`${name} is already in contacts`)) }
-    
-    this.setState(prevState => ({
-      contacts: [newContact, ...prevState.contacts]
-    }))
-    
-  }
-
-  changeFilter = e => {
-    this.setState({ filter: e.target.value })
-    
-  }
   
-  getVisibleContacts = () => {
-    const {filter, contacts} = this.state
-    const normalizedFilter = filter.toLowerCase();
-
-    return contacts.filter((elem) =>
-    elem.name.toLowerCase().includes(normalizedFilter))
-
-  }
-
-  deleteContact = contactId  => {
-  this.setState(prevState => ({
-    contacts: prevState.contacts.filter(({ id }) => id !==contactId )
-  }))
-  
-  }
-
   toggleModal = () => {
     this.setState(({ showModal }) => ({
       showModal: !showModal,

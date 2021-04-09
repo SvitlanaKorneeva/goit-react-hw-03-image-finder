@@ -3,10 +3,12 @@ import s from "./Galerry.module.css";
 import { v4 as genId } from "uuid";
 
 
+
 class Gallery extends Component
 {
     state = {
         queryValue: "",
+        elem: null,
     };
 
 handleChange = (e) => {
@@ -21,9 +23,14 @@ handleSubmit = (e) => {
     this.state.queryValue = "";
 }
     
+    getElem = (elem) => {
+    this.props.toggleModal();
+    this.setState({ elem });
+    }
+    
     render() {
         const { gallery} = this.props;
-        const { handleChange, handleSubmit } = this;
+        const { toggleModal, handleChange, handleSubmit, getElem } = this;
         const {  queryValue } = this.state;
         return (
         <>
@@ -37,11 +44,11 @@ handleSubmit = (e) => {
     className={s.SearchForm_input}
       type="text"
     //   autocomplete="off"
-    //   autofocus
+    autofocus
     placeholder="Search images and photos"
-                            name="query"
-                            onChange={handleChange}
-                            value={queryValue}
+        name="query"
+        onChange={handleChange}
+        value={queryValue}
     />
   </form>
             </header></div>
@@ -50,7 +57,20 @@ handleSubmit = (e) => {
     <ul className={s.ImageGallery}>
                 {gallery.map((el) => (
                     <li key key={genId()} className={s.ImageGalleryItem}>
-                        <img scr={el.src.tiny} alt={el.alt} className={s.ImageGalleryItem_image}/>
+                        <img src={el.src.tiny} alt={el.alt} className={s.ImageGalleryItem_image}/>
+                    
+                    <div className={s.imgHover}>
+                    {/* <a href="#" onClick={toggleModal}> */}
+                    <a
+                     href="#"
+                    //   onClick={() => {
+                    //     getElem(el);
+                    //   }}
+                    >
+                      Click Me!
+                    </a>
+                  </div>
+                        
                     </li>
    
 ))}
