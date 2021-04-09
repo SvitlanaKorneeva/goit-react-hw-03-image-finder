@@ -29,8 +29,8 @@ handleSubmit = (e) => {
     }
     
     render() {
-        const { gallery} = this.props;
-        const { toggleModal, handleChange, handleSubmit, getElem } = this;
+        const { gallery, toggleModal} = this.props;
+        const { handleChange, handleSubmit, getElem } = this;
         const {  queryValue } = this.state;
         return (
         <>
@@ -62,10 +62,8 @@ handleSubmit = (e) => {
                     <div className={s.imgHover}>
                     {/* <a href="#" onClick={toggleModal}> */}
                     <a
-                     href="#"
-                    //   onClick={() => {
-                    //     getElem(el);
-                    //   }}
+                     href="#" onClick={toggleModal}
+                
                     >
                       Click Me!
                     </a>
