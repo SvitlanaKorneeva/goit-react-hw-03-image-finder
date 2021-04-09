@@ -1,44 +1,46 @@
 import React, { Component } from "react";
 
 import "./App.css";
-import ContactForm from "./components/ContactForm/ContactForm";
-import Filter from "./components/Filter/Filter";
+
 import { v4 as genId } from "uuid";
-import ContactList from "./components/ContactList/ContactList";
+
 import Modal from "./components/Modal/Modal";
 import Button from "./components/Button/Button";
+import Gallery from "./components/Gallery/Galerry";
+import getGalleryItems from "./services/pexelsApi";
+const { getFetch } = getGalleryItems;
+
 
 class App extends Component {
   state = {
-    contacts: [ {id: 'id-1', name: 'Rosie Simpson', number: '459-12-56'},
-    {id: 'id-2', name: 'Hermione Kline', number: '443-89-12'},
-    {id: 'id-3', name: 'Eden Clements', number: '645-17-79'},
-    {id: 'id-4', name: 'Annie Copeland', number: '227-91-26'},
-    ],
-    filter: '',
+    query: "moon",
+    page: 1,
+    gallery: [],
     showModal : false
   }
   
 
-  componentDidMount() {
+   componentDidMount() {
+    const { query, page } = this.state;
+    getFetch(query, page)
+      .then((result) => {
+        console.log(result);
+        this.setState({ gallery: [...result] });
+      })
+      .catch((err) => {});
+  }
 
-    const contacts = localStorage.getItem('contacts');
-    const parsedContacts = JSON.parse(contacts)
-    if (parsedContacts) {
-       this.setState({ contacts: parsedContacts })
-    }
-    // console.log(parsedContacts)
-    }
-
-  componentDidUpdate(prevProps, prevState) {
-    console.log(prevState);
-    console.log(this.state)
-    if (this.state.contacts !== prevState.contacts) {
-      console.log('Обновилось поле contacts, записываю contacts в хранилище')
-      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+   componentDidUpdate(prevProps, prevState) {
+    const { query, page } = this.state;
+    if (query !== prevState.query) {
+      getFetch(query, page)
+        .then((result) => {
+          console.log(result);
+          this.setState((prev) => ({ gallery: [...prev.gallery, ...result] }));
+        })
+        .catch((err) => {});
     }
   }
-  
   addContact = ({ name, number }) => {
     const newContact = { id: genId, name, number }
     const contacts = this.state.contacts
@@ -77,19 +79,23 @@ class App extends Component {
       showModal: !showModal,
     }));
 }
-  
+  getQuery = (query) => {
+    this.setState({query})
+    
+  }
   render() {
-    const { filter, showModal } = this.state
-    const visibleContacts = this.getVisibleContacts();
-   
+    const { gallery, showModal } = this.state
+    const { getQuery } = this;
+  
       return (
         <div>
           <button type= "button" onClick={this.toggleModal}>Открыть модалку</button>
           {showModal && <Modal onClose = {this.toggleModal}>
           <h1>привет это контент модалки</h1>
           </Modal>}
-          <Button>Load more</Button>
+          <Button aria-label="Загрузить еще">Load more</Button>
           <h1 className="title">Phonebook</h1>
+          <Gallery gallery={gallery} getQuery={getQuery }/>
           {/* <ContactForm onAddContact={this.addContact} contacts={visibleContacts} />
           <h2 className="title">Contacts</h2>
           <Filter filter={filter} changeFilter={this.changeFilter} />
