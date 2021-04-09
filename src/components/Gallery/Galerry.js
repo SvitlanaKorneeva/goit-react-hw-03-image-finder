@@ -49,8 +49,8 @@ handleSubmit = (e) => {
             
     <ul className={s.ImageGallery}>
                 {gallery.map((el) => (
-                    <li key key={genId()} >
-                        <img scr={el.src.tiny} alt={el.alt}/>
+                    <li key key={genId()} className={s.ImageGalleryItem}>
+                        <img scr={el.src.tiny} alt={el.alt} className={s.ImageGalleryItem_image}/>
                     </li>
    
 ))}
