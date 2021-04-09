@@ -4,7 +4,7 @@ import "./App.css";
 
 import { v4 as genId } from "uuid";
 
-import Modal from "./components/Modal/Modal";
+// import Modal from "./components/Modal/Modal";
 import Button from "./components/Button/Button";
 import Gallery from "./components/Gallery/Galerry";
 import getGalleryItems from "./services/pexelsApi";
@@ -16,7 +16,7 @@ class App extends Component {
     query: "moon",
     page: 1,
     gallery: [],
-    showModal : false
+    // showModal : false
   }
   
 
@@ -42,11 +42,11 @@ class App extends Component {
     }
   }
   
-  toggleModal = () => {
-    this.setState(({ showModal }) => ({
-      showModal: !showModal,
-    }));
-}
+  // toggleModal = () => {
+  //   this.setState(({ showModal }) => ({
+  //     showModal: !showModal,
+  //   }));
+
   getQuery = (query) => {
     this.setState({query})
     
@@ -57,10 +57,10 @@ class App extends Component {
   
       return (
         <div>
-          <button type= "button" onClick={this.toggleModal}>Открыть модалку</button>
+          {/* <button type= "button" onClick={this.toggleModal}>Открыть модалку</button>
           {showModal && <Modal onClose = {this.toggleModal}>
           <h1>привет это контент модалки</h1>
-          </Modal>}
+          </Modal>} */}
           <Button aria-label="Загрузить еще">Load more</Button>
           <h1 className="title">Phonebook</h1>
           <Gallery gallery={gallery} getQuery={getQuery }/>
