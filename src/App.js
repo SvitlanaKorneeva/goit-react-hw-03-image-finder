@@ -8,19 +8,22 @@ import { v4 as genId } from "uuid";
 import Searchbar from "./components/Searchbar/Searchbar";
 import Button from "./components/Button/Button";
 import Gallery from "./components/Gallery/Galerry";
+import LoaderSpinner from "./components/Loader/Loader";
 import getGalleryItems from "./services/pexelsApi";
 const { getFetch } = getGalleryItems;
 
 
 class App extends Component {
   state = {
-    query: "moon",
+    query: "",
     page: 1,
     gallery: [],
+    isLoading: false,
+    error: null,
+    
     // showModal : false
   }
   
-
    componentDidMount() {
     const { query, page } = this.state;
     getFetch(query, page)
@@ -30,7 +33,6 @@ class App extends Component {
       })
       .catch((err) => {});
   }
-
    componentDidUpdate(prevProps, prevState) {
     const { query, page } = this.state;
     if (query !== prevState.query) {
@@ -40,37 +42,44 @@ class App extends Component {
           this.setState((prev) => ({ gallery: [...prev.gallery, ...result] } ));
         })
         .catch((err) => { });
-      this.fetchGallery();
+       this.fetchGallery();
     }
   }
   
-
   getQuery = (query) => {
-    this.setState({query})
-    
-  }
-  fetchGallery = () => {
-  const { query, page } = this.state;
-    getFetch(query, page)
-        .then((result) => {
-          console.log(result);
-          this.setState((prevState) => ({ page: prevState.page + 1, }));
-        })
+    this.setState({query: query, page:1, gallery: [], error: null})
     
   }
 
+  fetchGallery = () => {
+    const { query, page, gallery } = this.state;
+    
+    this.setState ({isLoading: true})
+      getFetch(query, page)
+        .then((result) => {
+          this.setState({
+            gallery: [...gallery, ...result],
+            page: page + 1,
+          }); 
+        }) .catch(error => this.setState({ error }))
+    .finally(() => this.setState({ isLoading: false }))
+    
+  }
 
   render() {
-    const { gallery, showModal } = this.state
+    const { gallery, isLoading, error, showModal } = this.state
     const { getQuery } = this;
-  
+    const shouldRenderLoadMoreButton = gallery.length > 0 && !isLoading;
       return (
         <div>
-         
           <h1 className="title">Search images</h1>
-          <Searchbar getQuery={getQuery}/>
-          <Gallery gallery={gallery} getQuery={getQuery}/>
-          <Button aria-label="Загрузить еще" onClick = {this.fetchGallery}>Load more</Button>
+          {error && <h1>Ой ошибка, всё пропало!!!</h1>}
+          <Searchbar getQuery={getQuery} />
+          {isLoading && <h1>Loading...</h1>}
+    
+          <Gallery gallery={gallery} getQuery={getQuery} />
+          {isLoading && <LoaderSpinner/>}
+          {shouldRenderLoadMoreButton && (<Button aria-label="Загрузить еще" onClick = {this.fetchGallery}>Load more</Button>)}
           
         </div>
     );
