@@ -5,6 +5,7 @@ import "./App.css";
 import { v4 as genId } from "uuid";
 
 // import Modal from "./components/Modal/Modal";
+import Searchbar from "./components/Searchbar/Searchbar";
 import Button from "./components/Button/Button";
 import Gallery from "./components/Gallery/Galerry";
 import getGalleryItems from "./services/pexelsApi";
@@ -36,34 +37,40 @@ class App extends Component {
       getFetch(query, page)
         .then((result) => {
           console.log(result);
-          this.setState((prev) => ({ gallery: [...prev.gallery, ...result] }));
+          this.setState((prev) => ({ gallery: [...prev.gallery, ...result] } ));
         })
-        .catch((err) => {});
+        .catch((err) => { });
+      this.fetchGallery();
     }
   }
   
-  // toggleModal = () => {
-  //   this.setState(({ showModal }) => ({
-  //     showModal: !showModal,
-  //   }));
 
   getQuery = (query) => {
     this.setState({query})
     
   }
+  fetchGallery = () => {
+  const { query, page } = this.state;
+    getFetch(query, page)
+        .then((result) => {
+          console.log(result);
+          this.setState((prevState) => ({ page: prevState.page + 1, }));
+        })
+    
+  }
+
+
   render() {
     const { gallery, showModal } = this.state
     const { getQuery } = this;
   
       return (
         <div>
-          {/* <button type= "button" onClick={this.toggleModal}>Открыть модалку</button>
-          {showModal && <Modal onClose = {this.toggleModal}>
-          <h1>привет это контент модалки</h1>
-          </Modal>} */}
-          <Button aria-label="Загрузить еще">Load more</Button>
-          <h1 className="title">Phonebook</h1>
-          <Gallery gallery={gallery} getQuery={getQuery }/>
+         
+          <h1 className="title">Search images</h1>
+          <Searchbar getQuery={getQuery}/>
+          <Gallery gallery={gallery} getQuery={getQuery}/>
+          <Button aria-label="Загрузить еще" onClick = {this.fetchGallery}>Load more</Button>
           
         </div>
     );
