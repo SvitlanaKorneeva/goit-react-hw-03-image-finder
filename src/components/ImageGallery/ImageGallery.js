@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import s from "./Galerry.module.css";
+import s from "./ImageGallery.module.css";
 import { v4 as genId } from "uuid";
 import Modal from "../Modal/Modal"
 import ImageGalleryItem from "../ImageGalleryItem/ImageGalleryItem";
@@ -19,6 +19,11 @@ class Gallery extends Component
         }));
     
     }
+
+    showImg= () => {
+        this.setState({ showModal: true })
+            
+    }
   
     getElem = (elem) => {
     this.toggleModal();
@@ -32,7 +37,10 @@ class Gallery extends Component
         return (
             <>
         
-          {showModal && <Modal onClose = {this.toggleModal} source={largeImageURL}>
+                {showModal && <Modal
+                    onClose={this.toggleModal}
+                    showImg={this.showImg}
+                    source={elem.src.tiny}>
           </Modal>}
                     
     <ul className={s.ImageGallery}>

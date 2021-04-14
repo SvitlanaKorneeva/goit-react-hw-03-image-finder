@@ -7,7 +7,7 @@ import { v4 as genId } from "uuid";
 // import Modal from "./components/Modal/Modal";
 import Searchbar from "./components/Searchbar/Searchbar";
 import Button from "./components/Button/Button";
-import Gallery from "./components/Gallery/Galerry";
+import Gallery from "./components/ImageGallery/ImageGallery";
 import LoaderSpinner from "./components/Loader/Loader";
 import getGalleryItems from "./services/pexelsApi";
 const { getFetch } = getGalleryItems;
@@ -42,7 +42,8 @@ class App extends Component {
           this.setState((prev) => ({ gallery: [...prev.gallery, ...result] } ));
         })
         .catch((err) => { });
-       this.fetchGallery();
+      this.fetchGallery();
+      
     }
   }
   
@@ -62,7 +63,12 @@ class App extends Component {
             page: page + 1,
           }); 
         }) .catch(error => this.setState({ error }))
-    .finally(() => this.setState({ isLoading: false }))
+        .finally(() => this.setState({ isLoading: false }))
+    
+    window.scrollTo({
+  top: document.documentElement.scrollHeight,
+  behavior: 'smooth',
+});
     
   }
 
@@ -72,14 +78,13 @@ class App extends Component {
     const shouldRenderLoadMoreButton = gallery.length > 0 && !isLoading;
       return (
         <div>
-          <h1 className="title">Search images</h1>
           {error && <h1>Ой ошибка, всё пропало!!!</h1>}
           <Searchbar getQuery={getQuery} />
           {isLoading && <h1>Loading...</h1>}
     
           <Gallery gallery={gallery} getQuery={getQuery} />
           {isLoading && <LoaderSpinner/>}
-          {shouldRenderLoadMoreButton && (<Button aria-label="Загрузить еще" onClick = {this.fetchGallery}>Load more</Button>)}
+          {shouldRenderLoadMoreButton && (<Button onClick = {this.fetchGallery}/>)}
           
         </div>
     );

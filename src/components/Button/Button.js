@@ -2,9 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import s from "./Button.module.css"
 
-const Button = ({ children, onClick, ...allyProps }) => (
-    <button type="button" className={s.Button} onClick={onClick} {...allyProps}>
-    {children}
+const Button = ({ onClick}) => (
+  <button
+    type="button"
+    aria-label="Загрузить еще"
+    className={s.Button}
+    onClick={onClick}>
+    Load more
   </button>
 );
 

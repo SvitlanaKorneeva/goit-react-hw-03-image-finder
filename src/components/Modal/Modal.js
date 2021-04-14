@@ -35,11 +35,15 @@ class Modal extends Component {
     }
     }
     render() {
-        const { children, source } = this.props;
+        const { children, source,el,getElem } = this.props;
         return createPortal(
             <div className={s.Modal__backdrop} onClick={this.handleBackdropClick}>
                 <div className={s.Modal__content}>
-                    <img src={source} alt="" />
+                    <img src={source}
+                        onClick={() => {
+                            getElem(el)
+                        }}
+                        alt="" />
                     {children}</div>
             </div>, modalRoot,
             
